@@ -1,0 +1,20 @@
+const express = require("express");
+const app = express();
+var bodyParser = require("body-parser");
+const dbConnect = require("./dbConnection");
+const usersRoutes = require("./routes/usersRoutes");
+const contactRoutes = require("./routes/contactRoutes");
+const groupRoutes = require("./routes/groupRoutes");
+const { req_history } = require("./middleware/middleware");
+const cors = require("cors");
+const PORT = 5000;
+//db Connection
+dbConnect("mongodb://0.0.0.0:27017/DTD");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(req_history);
+app.use(cors({ origin: "*" }));
+app.use("/api/users", usersRoutes);
+app.use("/user/contact", contactRoutes);
+app.use("/user/group", groupRoutes);
+app.listen(PORT, () => console.log(`Server is running at ${PORT} port`));
